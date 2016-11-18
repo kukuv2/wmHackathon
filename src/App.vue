@@ -73,10 +73,28 @@
             },
             bindEvent: function () {
                 var renderElement = this.renderer.domElement
-                renderElement.addEventListener('touchmove',function (e) {
-                    console.log(e);
-                    debugger
-                })
+                renderElement.addEventListener('touchstart', this.recordStartPoint)
+                renderElement.addEventListener('touchmove', this.rotateAction)
+
+            },
+            recordStartPoint: function (e) {
+                if (e.touches.length > 1) {
+                    return
+                }
+                e.preventDefault();
+                if (true) { //是否支持touchstart
+                    if (e.changedTouches[0]) {
+                        e = e.changedTouches[0]
+                    }
+                }
+                i.touchStartX = e.clientX,
+                i.isPageMove && (i.Track.startPoint = {
+                    x: e.clientX,
+                    y: e.clientY
+                },
+                i.Track.rotateStartPoint = i.Track.rotateEndPoint = i.Track.projectOnTrackball(0, 0))
+            },
+            rotateAction: function (e) {
 
             }
         },
