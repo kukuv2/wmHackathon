@@ -37,6 +37,7 @@ export default (function () {
                 s
         }
         this.handleRotation = function (t) {
+            console.log('~~~~~')
             e.rotateEndPoint = e.projectOnTrackball(e.deltaX, e.deltaY);
             var n = i(e.rotateStartPoint, e.rotateEndPoint)
                 , r = t.quaternion;
