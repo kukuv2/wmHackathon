@@ -1,4 +1,3 @@
-<script src="../../../../.ShadowsocksX/gfwlist.js"></script>
 <template>
     <div class="m-main" style="display: block;">
         <div class="m-webgl-page" style="display: none;"></div>

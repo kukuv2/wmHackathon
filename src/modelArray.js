@@ -6,7 +6,7 @@ export default [{
     id: 0,
     modelName: "sxj",
     modelDescription: "超清直播",
-    modelSrc: t.modePath + "sxj.json",
+    modelSrc: t.modePath + "123.json",
     color: "",
     x: "0.20964",
     y: "11.04988",

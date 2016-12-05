@@ -1,7 +1,7 @@
-<script src="../../../../.ShadowsocksX/gfwlist.js"></script>
 <template>
     <div class="m-main" style="display: block;">
-        <div class="m-webgl-page" style="display: none;"></div>
+        <!--<div class="m-webgl-page" style="display: none;"></div>-->
+        <div class="m-webgl-page" style=""></div>
         <div class="m-btn" style="display: block; opacity: 1;">
             <div class="wrap" data-response="true" style="transform: scale(1);">
                 <div class="btn-open" style="transform: matrix(1, 0, 0, 1, 0, 0);"></div>
@@ -43,6 +43,7 @@
 <script>
     import Controller from './controller'
     import modelArray from './modelArray.js'
+    import Detector from './three/detector'
     var u = new THREE.Clock;
     var o = 0;
     export default {
@@ -119,24 +120,30 @@
                     $('.m-webgl-page').show()
                 };
                 e.onloading = function (n) {
-                    console.log(n)
+                    if(n === 45){
+                        alert('is 45')
+                    }
+                    console.log(n);
                 };
-                for (var n = 0, r = modelArray.length; n < r; n++)
-                switch (modelArray[n].modelType) {
-                case "animateModel":
-                    //E(modelArray[n]);
-                    break;
-                case "materialModel":
-                    S(modelArray[n]);
-                    break;
-                case "imgModel":
-                    T(modelArray[n]);
-                    break;
-                case "circleModel":
-                    x(modelArray[n]);
-                    break;
-                default:
-                    return
+                alert('begin')
+                var tmpModelArray = modelArray.splice(0,10)
+                for (var n = 0, r = tmpModelArray.length; n < r; n++){
+                    switch (modelArray[n].modelType) {
+                        case "animateModel":
+                            //E(modelArray[n]);
+                            break;
+                        case "materialModel":
+                            S(modelArray[n]);
+                            break;
+                        case "imgModel":
+                            T(modelArray[n]);
+                            break;
+                        case "circleModel":
+                            x(modelArray[n]);
+                            break;
+                        default:
+                            return
+                    }
                 }
                 e.scene.objectArray = e.objectArray
                     //console.log(modelArray)
@@ -156,10 +163,11 @@
 //                     this.controller.selectObject = mesh
 //                 })
                 function w() {
-                    n++,
-                    n == 45 ? (e.onloading && e.onloading(100),
+                    n++;
+                    n == tmpModelArray.length ? (e.onloading && e.onloading(100),
                     setTimeout(function() {
                         console.log("loadEnd"),
+                        alert("loadEnd"),
                         e.onload && e.onload()
                     }, 300)) : e.onloading && e.onloading(n)
                 }
