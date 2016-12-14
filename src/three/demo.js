@@ -59,7 +59,7 @@ define("app/TD", [], function () {
         ,
         e.initWxApi = function (t, n) {
             wx.config({
-                debug: !1,
+                debug: false,
                 appId: t.appId,
                 timestamp: t.timestamp,
                 nonceStr: t.nonceStr,
@@ -115,7 +115,7 @@ define("app/TD", [], function () {
         ,
         e.initWxApiSplit = function (t, n) {
             wx.config({
-                debug: !0,
+                debug: true,
                 appId: t.appId,
                 timestamp: t.timestamp,
                 nonceStr: t.nonceStr,
@@ -152,7 +152,7 @@ define("app/TD", [], function () {
                     }
                 }
                 , f = function () {
-                    var r = !1;
+                    var r = false;
                     t.ajax.forEach(function (t) {
                         e.ajax({
                             url: t.url,
@@ -168,7 +168,7 @@ define("app/TD", [], function () {
                             }
                         }(t), function (e) {
                             return function (t) {
-                                r = !0,
+                                r = true,
                                 n.fail && n.fail({
                                     msg: t,
                                     url: e.url
@@ -990,7 +990,7 @@ define("app/TD", [], function () {
             ],
             t.Preload = e;
         var n = window.navigator.userAgent.toLowerCase();
-        return t.isAndroid = n.match(/android/i) ? !0 : !1,
+        return t.isAndroid = n.match(/android/i) ? true : false,
             t
     }),
     define("app/LoadViewController", ["app/TD", "app/Config"], function (e, t) {
@@ -1035,14 +1035,14 @@ define("app/TD", [], function () {
                 var e = this
                     , r = {};
                 r.pageEl = $(".m-loading"),
-                    r.isInit = !1,
+                    r.isInit = false,
                     r.loadAudio = function () {
                         t.audio.bg = new Audio(t.audioPath.bg),
-                            t.audio.bg.loop = !0
+                            t.audio.bg.loop = true
                     }
                     ,
                     r.init = function () {
-                        if (r.isInit === !0)
+                        if (r.isInit === true)
                             return;
                         n(),
                             r.processEl = r.pageEl.find(".loadProcess .inner"),
@@ -1062,7 +1062,7 @@ define("app/TD", [], function () {
                                 console.log(e)
                             }
                             ,
-                            r.isInit = !0,
+                            r.isInit = true,
                             r.loadAudio(),
                             TweenMax.to(".content", .1, {
                                 opacity: 1,
@@ -1089,827 +1089,826 @@ define("app/TD", [], function () {
         return r
     }),
     define("app/IndexViewController", ["app/TD", "app/Config"], function (e, t) {
-        var n = function () {
-                function m() {
-                    var t = u.getDelta();
-                    e.globalGroupAnimate ? (o += .01,
-                    o > 2 * Math.PI && (o = 0),
-                        e.globalGroup.rotation.y = o) : o = 0;
-                    if (e.animateStart && e.animateArray.length) {
-                        var n = e.animateArray[e.selectAnimateId];
-                        n.children[0].updateAnimation(n.modelInfo.animateTime * t),
-                            n.children[1].updateAnimation(n.modelInfo.animateTime * t)
-                    }
-                    requestAnimationFrame(m),
-                        g()
+        var Scene = function () {
+            function m() {
+                var t = u.getDelta();
+                e.globalGroupAnimate ? (o += .01,
+                o > 2 * Math.PI && (o = 0),
+                    e.globalGroup.rotation.y = o) : o = 0;
+                if (e.animateStart && e.animateArray.length) {
+                    var n = e.animateArray[e.selectAnimateId];
+                    n.children[0].updateAnimation(n.modelInfo.animateTime * t),
+                        n.children[1].updateAnimation(n.modelInfo.animateTime * t)
                 }
-
-                function g() {
-                    e.renderer.render(e.scene, e.camera)
-                }
-
-                function y() {
-                    e.loader = new THREE.JSONLoader,
-                        a = new THREE.AmbientLight(16777215),
-                        e.scene.add(a),
-                        f = new THREE.PointLight(16777215),
-                        f.intensity = 0,
-                        f.position.set(0, 0, 0),
-                        e.scene.add(f),
-                        l = new THREE.PointLight(16777215),
-                        l.position.set(900, -900, 0),
-                        e.scene.add(l),
-                        c = new THREE.PointLight(16777215),
-                        c.position.set(-4500, 4500, 0),
-                        e.scene.add(c),
-                        h = new THREE.PointLight(44287),
-                        h.position.set(-900, 0, 0),
-                        e.scene.add(h),
-                        p = new THREE.PointLight(16711694),
-                        p.position.set(900, 0, 0),
-                        e.scene.add(p),
-                        e.globalGroup = new THREE.Group,
-                        e.globalGroup.rotation.x = Math.PI / 2,
-                        e.sphere = new THREE.Mesh(new THREE.SphereGeometry(1800, 15, 15), new THREE.MeshBasicMaterial({
-                            color: 1711929,
-                            wireframe: !0
-                        })),
-                        e.scene.add(e.sphere),
-                        e.scene.add(e.globalGroup);
-                    for (var n = 0, r = t.modelArray.length; n < r; n++)
-                        switch (t.modelArray[n].modelType) {
-                            case "animateModel":
-                                E(t.modelArray[n]);
-                                break;
-                            case "materialModel":
-                                S(t.modelArray[n]);
-                                break;
-                            case "imgModel":
-                                T(t.modelArray[n]);
-                                break;
-                            case "circleModel":
-                                x(t.modelArray[n]);
-                                break;
-                            default:
-                                return
-                        }
-                }
-
-                function b(e, t) {
-                    return e.modelInfo.id - t.modelInfo.id
-                }
-
-                function w() {
-                    n++,
-                        n == i ? (e.onloading && e.onloading(100),
-                            setTimeout(function () {
-                                e.objectArray.sort(b),
-                                    e.animateArray.sort(b),
-                                    console.log("loadEnd"),
-                                    e.show(),
-                                e.onload && e.onload()
-                            }, 300)) : e.onloading && e.onloading(t.process + Math.round(n / i * 60))
-                }
-
-                function E(t) {
-                    var n = new THREE.BoxGeometry(60, 130, 70)
-                        , r = new THREE.Material
-                        , i = new THREE.Mesh(n, r);
-                    i.material.visible = !1,
-                        i.position.set(t.x * 20, t.y * 20, t.z * 20),
-                        i.rotationAutoUpdate = !1,
-                        i.rotation.x = -Math.PI / 12,
-                        i.rotation.y = Math.PI / 6,
-                        i.name = t.modelName,
-                        i.modelInfo = {
-                            id: t.id,
-                            infoClass: t.infoClassName,
-                            detailContentEl: t.detailContentEl,
-                            animateId: t.animateId,
-                            isAnimateModel: !0,
-                            animateTime: t.animateTime
-                        },
-                        e.loader.setCrossOrigin("");
-                    for (var s = 0; s < t.modelSrc.length; s++)
-                        (function (n) {
-                            e.loader.load(t.modelSrc[n], function (e, r) {
-                                for (var s in r)
-                                    r[s].shading = THREE.FlatShading,
-                                        r[s].morphTargets = !0;
-                                var o = new THREE.MeshFaceMaterial(r)
-                                    , u = new THREE.MorphAnimMesh(e, o);
-                                u.name = t.modelName,
-                                    u.duration = 1e3,
-                                    u.position.set(0, -50, 0),
-                                    u.scale.set(t.scaleX, t.scaleY, t.scaleZ),
-                                    i.add(u),
-                                n == 1 && w()
-                            })
-                        })(s);
-                    e.globalGroup.add(i),
-                        e.objectArray.push(i),
-                        e.animateArray.push(i)
-                }
-
-                function S(t) {
-                    var n = new THREE.BoxGeometry(40, 40, 50)
-                        , r = new THREE.Material
-                        , i = new THREE.Mesh(n, r);
-                    i.material.visible = !1,
-                        i.modelInfo = {
-                            id: t.id,
-                            infoClass: t.infoClassName,
-                            detailContentEl: t.detailContentEl,
-                            isAnimateModel: !1
-                        },
-                        i.position.set(t.x * 20, t.y * 20, t.z * 20),
-                        i.rotation.x = -Math.PI / 12,
-                        i.rotation.y = Math.PI / 6,
-                        i.name = t.modelName,
-                        e.loader.load(t.modelSrc, function (e, n) {
-                            for (var r in n)
-                                n[r].shading = THREE.FlatShading,
-                                n[r].wireframe && (n[r].opacity = 0,
-                                    n[r].transparent = !0);
-                            var s = new THREE.MeshFaceMaterial(n)
-                                , o = new THREE.Mesh(e, s);
-                            o.scale.set(t.scaleX, t.scaleY, t.scaleZ),
-                                i.add(o),
-                                w()
-                        }),
-                        e.globalGroup.add(i),
-                        e.objectArray.push(i)
-                }
-
-                function x(t) {
-                    e.loader.load(t.modelSrc, function (n, r) {
-                        r[0].shading = THREE.FlatShading;
-                        var i = new THREE.MeshFaceMaterial(r);
-                        for (var s = 0; s < 3; s++) {
-                            var o = new THREE.Mesh(n, i);
-                            o.modelInfo = {
-                                id: s
-                            },
-                                o.position.set(0, 0, 0),
-                                o.rotation.x = t.angle[s].x,
-                                o.rotation.y = t.angle[s].y,
-                                o.rotation.z = t.angle[s].z,
-                                o.scale.set(t.scale[s].x, t.scale[s].y, t.scale[s].z),
-                                o.name = t.modelName + s,
-                                e.globalGroup.add(o)
-                        }
-                        w()
-                    })
-                }
-
-                function T(t) {
-                    var n = new THREE.BoxGeometry(40, 70, 50)
-                        , r = new THREE.Material
-                        , i = new THREE.Mesh(n, r);
-                    i.material.visible = !1,
-                        i.modelInfo = {
-                            id: t.id,
-                            infoClass: t.infoClassName,
-                            detailContentEl: t.detailContentEl,
-                            isAnimateModel: !1,
-                            isImgModel: !0
-                        },
-                        i.position.set(t.x * 20, t.y * 20, t.z * 20),
-                        i.name = t.modelName;
-                    var s = new THREE.IcosahedronGeometry(25, 0)
-                        , o = new THREE.MeshLambertMaterial({
-                        color: 13421772,
-                        opacity: .6,
-                        wireframe: !0
-                    })
-                        , s = new THREE.Mesh(s, o);
-                    i.add(s);
-                    var u = new THREE.Geometry
-                        , a = new THREE.Vector3(0, 0, 0);
-                    u.vertices.push(a);
-                    var f = THREE.ImageUtils;
-                    f.crossOrigin = "";
-                    var l = f.loadTexture(t.modelSrc)
-                        , c = new THREE.PointsMaterial({
-                        size: 85,
-                        map: l,
-                        transparent: !0
-                    })
-                        , h = new THREE.Points(u, c);
-                    h.material.map.minFilter = THREE.LinearFilter,
-                        i.add(h),
-                        w(),
-                        e.globalGroup.add(i),
-                        e.objectArray.push(i)
-                }
-
-                function N(t) {
-                    var n = t.length
-                        , r = new THREE.BufferGeometry
-                        , i = new Float32Array(3 * t.length)
-                        , s = new THREE.LineBasicMaterial({
-                        transparent: !0,
-                        opacity: 1,
-                        color: 16777215
-                    });
-                    for (var o = 0; o < n; o++)
-                        i[3 * o] = t[o].x * 15,
-                            i[3 * o + 1] = t[o].y * 15,
-                            i[3 * o + 2] = t[o].z * 15,
-                            r.addAttribute("position", new THREE.BufferAttribute(i, 3));
-                    var u = new THREE.Line(r, s);
-                    console.log(u),
-                        e.globalGroup.add(u),
-                        e.lineArray.push(s)
-                }
-
-                var e = this, n = 0, r = {}, i = t.modelArray.length, s = $(".m-webgl-page"), o = 0, u = new THREE.Clock, a, f, l, c, h, p, d;
-                e.objectArray = [],
-                    e.lineArray = [],
-                    e.animateArray = [],
-                    e.animateStart = !1,
-                    e.touchDown = !1,
-                    e.selectAnimateId = 0,
-                    e.globalGroupAnimate = !0;
-                var v = function () {
-                        e.scene = new THREE.Scene,
-                            e.scene.position.y = -80,
-                            e.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 15e3),
-                            e.camera.position.x = 0,
-                            e.camera.position.y = 0,
-                            e.camera.position.z = 1500,
-                            e.camera.lookAt(e.scene.position),
-                            e.renderer = new THREE.WebGLRenderer({
-                                alpha: !0,
-                                antialias: !1
-                            }),
-                            e.renderer.setClearColor(0, 0),
-                            e.renderer.sortObjects = !0,
-                            e.renderer.setPixelRatio(window.devicePixelRatio),
-                            e.renderer.setSize(window.innerWidth, window.innerHeight),
-                            s.append(e.renderer.domElement),
-                            y()
-                    }
-                    ;
-                this.show = function () {
-                    console.log("show")
-                }
-                    ,
-                    this.handleResize = function () {
-                        e.camera.aspect = window.innerWidth / window.innerHeight,
-                            e.camera.updateProjectionMatrix(),
-                            e.renderer.setSize(window.innerWidth, window.innerHeight)
-                    }
-                    ,
-                    v(),
-                    m()
+                requestAnimationFrame(m),
+                    g()
             }
-            , r = function () {
-                function r(e, t, n) {
-                    return Math.min(Math.max(e, t), n)
-                }
 
-                function i(t, n) {
-                    var r = new THREE.Vector3
-                        , i = new THREE.Quaternion
-                        , s = Math.acos(t.dot(n) / t.length() / n.length());
-                    return s && (r.crossVectors(t, n).normalize(),
-                        s *= e.rotationSpeed,
-                        i.setFromAxisAngle(r, s)),
-                        i
-                }
+            function g() {
+                e.renderer.render(e.scene, e.camera)
+            }
 
-                var e = this
-                    , t = window.innerWidth / 2
-                    , n = window.innerHeight / 2;
-                this.rotationSpeed = 2,
-                    this.nowQuaternion = null ,
-                    this.rotateStartPoint = new THREE.Vector3(0, 0, 1),
-                    this.rotateEndPoint = new THREE.Vector3(0, 0, 1),
-                    this.lastMoveTimestamp,
-                    this.deltaX = 0,
-                    this.deltaY = 0,
-                    this.startPoint = {
-                        x: 0,
-                        y: 0
+            function y() {
+                e.loader = new THREE.JSONLoader,
+                    a = new THREE.AmbientLight(16777215),
+                    e.scene.add(a),
+                    f = new THREE.PointLight(16777215),
+                    f.intensity = 0,
+                    f.position.set(0, 0, 0),
+                    e.scene.add(f),
+                    l = new THREE.PointLight(16777215),
+                    l.position.set(900, -900, 0),
+                    e.scene.add(l),
+                    c = new THREE.PointLight(16777215),
+                    c.position.set(-4500, 4500, 0),
+                    e.scene.add(c),
+                    h = new THREE.PointLight(44287),
+                    h.position.set(-900, 0, 0),
+                    e.scene.add(h),
+                    p = new THREE.PointLight(16711694),
+                    p.position.set(900, 0, 0),
+                    e.scene.add(p),
+                    e.globalGroup = new THREE.Group,
+                    e.globalGroup.rotation.x = Math.PI / 2,
+                    e.sphere = new THREE.Mesh(new THREE.SphereGeometry(1800, 15, 15), new THREE.MeshBasicMaterial({
+                        color: 1711929,
+                        wireframe: true
+                    })),
+                    e.scene.add(e.sphere),
+                    e.scene.add(e.globalGroup);
+                for (var n = 0, r = t.modelArray.length; n < r; n++)
+                    switch (t.modelArray[n].modelType) {
+                        case "animateModel":
+                            E(t.modelArray[n]);
+                            break;
+                        case "materialModel":
+                            S(t.modelArray[n]);
+                            break;
+                        case "imgModel":
+                            T(t.modelArray[n]);
+                            break;
+                        case "circleModel":
+                            x(t.modelArray[n]);
+                            break;
+                        default:
+                            return
+                    }
+            }
+
+            function b(e, t) {
+                return e.modelInfo.id - t.modelInfo.id
+            }
+
+            function w() {
+                n++,
+                    n == i ? (e.onloading && e.onloading(100),
+                        setTimeout(function () {
+                            e.objectArray.sort(b),
+                                e.animateArray.sort(b),
+                                console.log("loadEnd"),
+                                e.show(),
+                            e.onload && e.onload()
+                        }, 300)) : e.onloading && e.onloading(t.process + Math.round(n / i * 60))
+            }
+
+            function E(t) {
+                var n = new THREE.BoxGeometry(60, 130, 70)
+                    , r = new THREE.Material
+                    , i = new THREE.Mesh(n, r);
+                i.material.visible = false,
+                    i.position.set(t.x * 20, t.y * 20, t.z * 20),
+                    i.rotationAutoUpdate = false,
+                    i.rotation.x = -Math.PI / 12,
+                    i.rotation.y = Math.PI / 6,
+                    i.name = t.modelName,
+                    i.modelInfo = {
+                        id: t.id,
+                        infoClass: t.infoClassName,
+                        detailContentEl: t.detailContentEl,
+                        animateId: t.animateId,
+                        isAnimateModel: true,
+                        animateTime: t.animateTime
                     },
-                    this.projectOnTrackball = function (e, i) {
-                        var s = new THREE.Vector3;
-                        s.set(r(e / t, -1, 1), r(-i / n, -1, 1), 0);
-                        var o = s.length();
-                        return o > 1 ? s.normalize() : s.z = Math.sqrt(1 - o * o),
-                            s
-                    }
-                    ,
-                    this.handleRotation = function (t) {
-                        e.rotateEndPoint = e.projectOnTrackball(e.deltaX, e.deltaY);
-                        var n = i(e.rotateStartPoint, e.rotateEndPoint)
-                            , r = t.quaternion;
-                        r.multiplyQuaternions(n, r),
-                            r.normalize(),
-                            t.setRotationFromQuaternion(r),
-                            e.nowQuaternion = r,
-                            e.rotateEndPoint = e.rotateStartPoint
-                    }
+                    e.loader.setCrossOrigin("");
+                for (var s = 0; s < t.modelSrc.length; s++)
+                    (function (n) {
+                        e.loader.load(t.modelSrc[n], function (e, r) {
+                            for (var s in r)
+                                r[s].shading = THREE.FlatShading,
+                                    r[s].morphTargets = true;
+                            var o = new THREE.MeshFaceMaterial(r)
+                                , u = new THREE.MorphAnimMesh(e, o);
+                            u.name = t.modelName,
+                                u.duration = 1e3,
+                                u.position.set(0, -50, 0),
+                                u.scale.set(t.scaleX, t.scaleY, t.scaleZ),
+                                i.add(u),
+                            n == 1 && w()
+                        })
+                    })(s);
+                e.globalGroup.add(i),
+                    e.objectArray.push(i),
+                    e.animateArray.push(i)
             }
-            , i = function () {
-                function s() {
-                    t.audio.bg.play(),
-                        i.music.addClass("animate"),
-                        i.music.on("touchstart", function (e) {
-                            e.preventDefault(),
-                                e.stopPropagation(),
-                                $(this).hasClass("pause") ? (t.audio.bg.play(),
-                                    $(this).removeClass("pause"),
-                                    $(this).addClass("animate")) : (t.audio.bg.pause(),
-                                    $(this).addClass("pause"),
-                                    $(this).removeClass("animate"))
-                        })
-                }
 
-                function o(e) {
-                    e.preventDefault(),
-                        e.stopPropagation();
-                    if (i.isOpeningAnimate)
-                        return !1;
-                    i.isOpeningAnimate = !0,
-                    i.music.hasClass("pause") || t.audio.bg.play(),
-                        $(".m-tips").show(),
-                        $(".m-opening").hide(),
-                        setTimeout(function () {
-                            TweenMax.to(".m-tips", 1, {
-                                opacity: 0,
-                                onComplete: function () {
-                                    $(".m-tips").hide()
-                                }
-                            })
-                        }, 2e3),
-                        TweenMax.to(i.Scene.globalGroup.rotation, 1.5, {
-                            x: 0,
-                            y: 0,
-                            z: 0,
-                            ease: "Cubic.easeInOut",
-                            onComplete: function () {
-                                i.isOpeningHide = !0
-                            }
-                        })
-                }
+            function S(t) {
+                var n = new THREE.BoxGeometry(40, 40, 50)
+                    , r = new THREE.Material
+                    , i = new THREE.Mesh(n, r);
+                i.material.visible = false,
+                    i.modelInfo = {
+                        id: t.id,
+                        infoClass: t.infoClassName,
+                        detailContentEl: t.detailContentEl,
+                        isAnimateModel: false
+                    },
+                    i.position.set(t.x * 20, t.y * 20, t.z * 20),
+                    i.rotation.x = -Math.PI / 12,
+                    i.rotation.y = Math.PI / 6,
+                    i.name = t.modelName,
+                    e.loader.load(t.modelSrc, function (e, n) {
+                        for (var r in n)
+                            n[r].shading = THREE.FlatShading,
+                            n[r].wireframe && (n[r].opacity = 0,
+                                n[r].transparent = true);
+                        var s = new THREE.MeshFaceMaterial(n)
+                            , o = new THREE.Mesh(e, s);
+                        o.scale.set(t.scaleX, t.scaleY, t.scaleZ),
+                            i.add(o),
+                            w()
+                    }),
+                    e.globalGroup.add(i),
+                    e.objectArray.push(i)
+            }
 
-                function u(e) {
-                    e.preventDefault(),
-                        e.stopPropagation(),
-                        i.sharePop.show(),
-                        i.sharePop.on("touchstart", function () {
-                            $(this).hide(),
-                                $(this).off("touchstart")
-                        })
-                }
-
-                function a(e) {
-                    if (e.touches.length > 1)
-                        return !1;
-                    e.preventDefault(),
-                        e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e;
-                    if (i.isModeMove || !i.isOpeningHide)
-                        return !1;
-                    i.Scene.globalGroupAnimate = !1,
-                        i.PageTrack.startPoint = {
-                            x: e.clientX,
-                            y: e.clientY
+            function x(t) {
+                e.loader.load(t.modelSrc, function (n, r) {
+                    r[0].shading = THREE.FlatShading;
+                    var i = new THREE.MeshFaceMaterial(r);
+                    for (var s = 0; s < 3; s++) {
+                        var o = new THREE.Mesh(n, i);
+                        o.modelInfo = {
+                            id: s
                         },
-                        i.PageTrack.rotateStartPoint = i.PageTrack.rotateEndPoint = i.PageTrack.projectOnTrackball(0, 0)
-                }
-
-                function f(e) {
-                    if (e.touches.length > 1)
-                        return !1;
-                    e.preventDefault(),
-                        e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e;
-                    if (i.isModeMove || !i.isOpeningHide)
-                        return !1;
-                    i.Scene.globalGroupAnimate = !1,
-                        i.PageTrack.deltaX = e.clientX - i.PageTrack.startPoint.x,
-                        i.PageTrack.deltaY = e.clientY - i.PageTrack.startPoint.y,
-                        i.PageTrack.handleRotation(i.Scene.globalGroup),
-                        i.PageTrack.startPoint.x = e.clientX,
-                        i.PageTrack.startPoint.y = e.clientY,
-                        i.PageTrack.lastMoveTimestamp = new Date
-                }
-
-                function l(e, t) {
-                    if (!e.modelInfo.animateId) {
-                        console.log(n);
-                        var n = e.children[0].children[0].material;
-                        n.wireframe && (t ? TweenMax.to(n, 1, {
-                            opacity: 1,
-                            onComplete: function () {
-                                n.transparent = !1
-                            }
-                        }) : TweenMax.to(n, 1, {
-                            opacity: 0,
-                            onComplete: function () {
-                                n.transparent = !0
-                            }
-                        }))
+                            o.position.set(0, 0, 0),
+                            o.rotation.x = t.angle[s].x,
+                            o.rotation.y = t.angle[s].y,
+                            o.rotation.z = t.angle[s].z,
+                            o.scale.set(t.scale[s].x, t.scale[s].y, t.scale[s].z),
+                            o.name = t.modelName + s,
+                            e.globalGroup.add(o)
                     }
-                }
+                    w()
+                })
+            }
 
-                function c(e) {
-                    if (i.isFar)
-                        return !1;
-                    i.isFar = !0,
-                        i.isModeMove = !1,
+            function T(t) {
+                var n = new THREE.BoxGeometry(40, 70, 50)
+                    , r = new THREE.Material
+                    , i = new THREE.Mesh(n, r);
+                i.material.visible = false,
+                    i.modelInfo = {
+                        id: t.id,
+                        infoClass: t.infoClassName,
+                        detailContentEl: t.detailContentEl,
+                        isAnimateModel: false,
+                        isImgModel: true
+                    },
+                    i.position.set(t.x * 20, t.y * 20, t.z * 20),
+                    i.name = t.modelName;
+                var s = new THREE.IcosahedronGeometry(25, 0)
+                    , o = new THREE.MeshLambertMaterial({
+                    color: 13421772,
+                    opacity: .6,
+                    wireframe: true
+                })
+                    , s = new THREE.Mesh(s, o);
+                i.add(s);
+                var u = new THREE.Geometry
+                    , a = new THREE.Vector3(0, 0, 0);
+                u.vertices.push(a);
+                var f = THREE.ImageUtils;
+                f.crossOrigin = "";
+                var l = f.loadTexture(t.modelSrc)
+                    , c = new THREE.PointsMaterial({
+                    size: 85,
+                    map: l,
+                    transparent: true
+                })
+                    , h = new THREE.Points(u, c);
+                h.material.map.minFilter = THREE.LinearFilter,
+                    i.add(h),
+                    w(),
+                    e.globalGroup.add(i),
+                    e.objectArray.push(i)
+            }
+
+            function N(t) {
+                var n = t.length
+                    , r = new THREE.BufferGeometry
+                    , i = new Float32Array(3 * t.length)
+                    , s = new THREE.LineBasicMaterial({
+                    transparent: true,
+                    opacity: 1,
+                    color: 16777215
+                });
+                for (var o = 0; o < n; o++)
+                    i[3 * o] = t[o].x * 15,
+                        i[3 * o + 1] = t[o].y * 15,
+                        i[3 * o + 2] = t[o].z * 15,
+                        r.addAttribute("position", new THREE.BufferAttribute(i, 3));
+                var u = new THREE.Line(r, s);
+                console.log(u),
+                    e.globalGroup.add(u),
+                    e.lineArray.push(s)
+            }
+
+            var e = this, n = 0, r = {}, i = t.modelArray.length, s = $(".m-webgl-page"), o = 0, u = new THREE.Clock, a, f, l, c, h, p, d;
+            e.objectArray = [],
+                e.lineArray = [],
+                e.animateArray = [],
+                e.animateStart = false,
+                e.touchDown = false,
+                e.selectAnimateId = 0,
+                e.globalGroupAnimate = true;
+            var v = function () {
+                    e.scene = new THREE.Scene,
+                        e.scene.position.y = -80,
+                        e.camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 15e3),
+                        e.camera.position.x = 0,
+                        e.camera.position.y = 0,
+                        e.camera.position.z = 1500,
+                        e.camera.lookAt(e.scene.position),
+                        e.renderer = new THREE.WebGLRenderer({
+                            alpha: true,
+                            antialias: false
+                        }),
+                        e.renderer.setClearColor(0, 0),
+                        e.renderer.sortObjects = true,
+                        e.renderer.setPixelRatio(window.devicePixelRatio),
+                        e.renderer.setSize(window.innerWidth, window.innerHeight),
+                        s.append(e.renderer.domElement),
+                        y()
+                }
+                ;
+            this.show = function () {
+                console.log("show")
+            }
+                ,
+                this.handleResize = function () {
+                    e.camera.aspect = window.innerWidth / window.innerHeight,
+                        e.camera.updateProjectionMatrix(),
+                        e.renderer.setSize(window.innerWidth, window.innerHeight)
+                }
+                ,
+                v(),
+                m()
+        };
+        var track = function () {
+            function r(e, t, n) {
+                return Math.min(Math.max(e, t), n)
+            }
+
+            function i(t, n) {
+                var r = new THREE.Vector3
+                    , i = new THREE.Quaternion
+                    , s = Math.acos(t.dot(n) / t.length() / n.length());
+                return s && (r.crossVectors(t, n).normalize(),
+                    s *= e.rotationSpeed,
+                    i.setFromAxisAngle(r, s)),
+                    i
+            }
+
+            var e = this
+                , t = window.innerWidth / 2
+                , n = window.innerHeight / 2;
+            this.rotationSpeed = 2,
+                this.nowQuaternion = null ,
+                this.rotateStartPoint = new THREE.Vector3(0, 0, 1),
+                this.rotateEndPoint = new THREE.Vector3(0, 0, 1),
+                this.lastMoveTimestamp,
+                this.deltaX = 0,
+                this.deltaY = 0,
+                this.startPoint = {
+                    x: 0,
+                    y: 0
+                },
+                this.projectOnTrackball = function (e, i) {
+                    var s = new THREE.Vector3;
+                    s.set(r(e / t, -1, 1), r(-i / n, -1, 1), 0);
+                    var o = s.length();
+                    return o > 1 ? s.normalize() : s.z = Math.sqrt(1 - o * o),
+                        s
+                }
+                ,
+                this.handleRotation = function (t) {
+                    e.rotateEndPoint = e.projectOnTrackball(e.deltaX, e.deltaY);
+                    var n = i(e.rotateStartPoint, e.rotateEndPoint)
+                        , r = t.quaternion;
+                    r.multiplyQuaternions(n, r),
+                        r.normalize(),
+                        t.setRotationFromQuaternion(r),
+                        e.nowQuaternion = r,
+                        e.rotateEndPoint = e.rotateStartPoint
+                }
+        };
+        var indexViewControllerConstructor = function () {
+            function pgMusicController() {
+                t.audio.bg.play(),
+                    i.music.addClass("animate"),
+                    i.music.on("touchstart", function (e) {
                         e.preventDefault(),
-                        m(i.selectObject.modelInfo.infoClass),
-                        TweenMax.to(i.selectObject.rotation, 1, {
-                            x: -Math.PI / 12,
-                            y: Math.PI / 6,
-                            z: 0,
-                            onComplete: function () {
-                                i.selectObject = null
-                            }
-                        }),
-                        TweenMax.to(".m-btn", .5, {
+                            e.stopPropagation(),
+                            $(this).hasClass("pause") ? (t.audio.bg.play(),
+                                $(this).removeClass("pause"),
+                                $(this).addClass("animate")) : (t.audio.bg.pause(),
+                                $(this).addClass("pause"),
+                                $(this).removeClass("animate"))
+                    })
+            }
+
+            function openingLoading(e) {
+                e.preventDefault(),
+                    e.stopPropagation();
+                if (i.isOpeningAnimate)
+                    return false;
+                i.isOpeningAnimate = true,
+                i.music.hasClass("pause") || t.audio.bg.play(),
+                    $(".m-tips").show(),
+                    $(".m-opening").hide(),
+                    setTimeout(function () {
+                        TweenMax.to(".m-tips", 1, {
                             opacity: 0,
                             onComplete: function () {
-                                i.btnBox.hide()
-                            }
-                        }),
-                        TweenMax.to(".btn-open", .5, {
-                            rotation: 0
-                        }),
-                        TweenMax.to(".btn-close-3d", .5, {
-                            rotation: 0
-                        }),
-                        TweenMax.to(".btn-prev .inner", .5, {
-                            x: 0
-                        }),
-                        TweenMax.to(".btn-next .inner", .5, {
-                            x: 0,
-                            onComplete: function () {
-                                i.boxContent.removeClass("animate"),
-                                    i.Scene.globalGroupAnimate = !0
-                            }
-                        }),
-                        TweenMax.to(i.Scene.camera.position, 1, {
-                            x: 0,
-                            y: 0,
-                            z: 1500,
-                            ease: "Cubic.easeInOut",
-                            onComplete: function () {
-                                i.isPageMove = !1,
-                                    i.selectAnimate = !1,
-                                    i.Scene.animateStart = !1,
-                                    i.Scene.touchDown = !1,
-                                    i.isCameraMove = !1,
-                                    i.prevBtn.removeClass("lock"),
-                                    i.nextBtn.removeClass("lock")
+                                $(".m-tips").hide()
                             }
                         })
-                }
-
-                function h(e) {
-                    if (!i.isPrev || i.isCameraMove)
-                        return !1;
-                    i.isCameraMove = !0,
-                        e.preventDefault();
-                    var n, r = new THREE.Vector3, s = i.selectObject.modelInfo.id;
-                    TweenMax.to(i.selectObject.rotation, .5, {
-                        x: -Math.PI / 12,
-                        y: Math.PI / 6,
+                    }, 2e3),
+                    TweenMax.to(i.Scene.globalGroup.rotation, 1.5, {
+                        x: 0,
+                        y: 0,
                         z: 0,
+                        ease: "Cubic.easeInOut",
                         onComplete: function () {
+                            i.isOpeningHide = true
                         }
-                    }),
-                        m(i.selectObject.modelInfo.infoClass),
-                        s == 0 ? (i.selectObject = i.Scene.objectArray[t.modelArray.length - 1],
-                            r.setFromMatrixPosition(i.Scene.objectArray[t.modelArray.length - 1].matrixWorld)) : (i.selectObject = i.Scene.objectArray[s - 1],
-                            r.setFromMatrixPosition(i.Scene.objectArray[s - 1].matrixWorld)),
-                        b(r, i.selectObject)
-                }
+                    })
+            }
 
-                function p(e) {
-                    if (!i.isNext || i.isCameraMove)
-                        return !1;
-                    i.isCameraMove = !0,
-                        e.preventDefault();
-                    var n = new THREE.Vector3
-                        , r = i.selectObject.modelInfo.id;
-                    TweenMax.to(i.selectObject.rotation, .5, {
-                        x: -Math.PI / 12,
-                        y: Math.PI / 6,
-                        z: 0,
-                        onComplete: function () {
-                        }
-                    }),
-                        m(i.selectObject.modelInfo.infoClass),
-                        r == t.modelArray.length - 1 ? (i.selectObject = i.Scene.objectArray[0],
-                            n.setFromMatrixPosition(i.Scene.objectArray[0].matrixWorld)) : (i.selectObject = i.Scene.objectArray[r + 1],
-                            n.setFromMatrixPosition(i.Scene.objectArray[r + 1].matrixWorld)),
-                        b(n, i.selectObject)
-                }
+            function shareBtnTouch(e) {
+                e.preventDefault(),
+                    e.stopPropagation(),
+                    i.sharePop.show(),
+                    i.sharePop.on("touchstart", function () {
+                        $(this).hide(),
+                            $(this).off("touchstart")
+                    })
+            }
 
-                function d() {
-                    i.selectObject.modelInfo.id == 0 ? (i.prevBtn.addClass("lock"),
-                        i.isPrev = !1) : (i.prevBtn.removeClass("lock"),
-                        i.isPrev = !0),
-                        i.selectObject.modelInfo.id == t.modelArray.length - 1 ? (i.nextBtn.addClass("lock"),
-                            i.isNext = !1) : (i.nextBtn.removeClass("lock"),
-                            i.isNext = !0)
-                }
-
-                function v(e) {
-                    i.infoTitle.removeClass().addClass("info-title " + e),
-                        i.info.show(),
-                        TweenMax.to(".btn-open", 1, {
-                            rotation: 360,
-                            onComplete: function () {
-                            }
-                        }),
-                        TweenMax.to(".btn-close-3d", 1, {
-                            rotation: 360,
-                            onComplete: function () {
-                            }
-                        }),
-                        TweenMax.to(".btn-prev .inner", 1, {
-                            x: -34,
-                            onComplete: function () {
-                            }
-                        }),
-                        TweenMax.to(".btn-next .inner", 1, {
-                            x: 32,
-                            onComplete: function () {
-                                i.boxContent.addClass("animate")
-                            }
-                        }),
-                        TweenMax.to(".m-info", 1, {
-                            opacity: 1,
-                            onComplete: function () {
-                                console.log("show-info")
-                            }
-                        })
-                }
-
-                function m(e) {
-                    i.infoTitle.removeClass(e),
-                        TweenMax.to(".m-info", .2, {
-                            opacity: 0,
-                            onComplete: function () {
-                                console.log("hide-info"),
-                                    i.info.hide()
-                            }
-                        })
-                }
-
-                function g(e) {
-                    e.preventDefault(),
-                        i.detailCut.show(),
-                        setTimeout(function () {
-                            i.detailCut.addClass("animate"),
-                                i.selectObject.modelInfo.detailContentEl.show(),
-                                i.detail.show(),
-                                TweenMax.to(".m-detail", 1, {
-                                    opacity: 1,
-                                    delay: .1,
-                                    onComplete: function () {
-                                        console.log("show-detail")
-                                    }
-                                }),
-                                TweenMax.to(".btn-close-detail", 1, {
-                                    rotation: 360,
-                                    delay: .2,
-                                    onComplete: function () {
-                                    }
-                                })
-                        }, 100)
-                }
-
-                function y(e) {
-                    if (i.isHideDetail)
-                        return !1;
-                    i.isHideDetail = !0,
-                        e.preventDefault(),
-                        e.stopPropagation(),
-                        TweenMax.to(".btn-close-detail", .7, {
-                            rotation: 0,
-                            onComplete: function () {
-                            }
-                        }),
-                        TweenMax.to(".m-detail", .5, {
-                            opacity: 0,
-                            delay: .1,
-                            onComplete: function () {
-                                console.log("hide-detail"),
-                                    i.detail.hide(),
-                                    i.selectObject.modelInfo.detailContentEl.hide(),
-                                    i.isHideDetail = !1
-                            }
-                        })
-                }
-
-                function b(e, t) {
-                    t.modelInfo.isAnimateModel ? (i.Scene.selectAnimateId = t.modelInfo.animateId,
-                        i.selectAnimate = !0,
-                        i.Scene.animateStart = !0,
-                        e.z = 400 + e.z) : (i.selectAnimate = !1,
-                        i.Scene.animateStart = !1,
-                        i.selectObject.name == "center" ? e.z = 670 + e.z : i.selectObject.name == "mn" ? (e.z = 400 + e.z,
-                            e.y = -50 + e.y) : e.z = 165 + e.z),
-                        TweenMax.to(i.Scene.camera.position, 1, {
-                            x: e.x,
-                            y: -10 + e.y,
-                            z: e.z,
-                            ease: Expo.easeInOut,
-                            onComplete: function () {
-                                v(t.modelInfo.infoClass),
-                                    i.isCameraMove = !1
-                            }
-                        })
-                }
-
-                function w(e) {
-                    if (e.touches.length > 1)
-                        return !1;
-                    e.preventDefault(),
-                        e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e;
-                    if (Math.abs(e.clientX - i.touchStartX) > 20)
-                        return !1;
-                    i.Scene.globalGroupAnimate = !1,
-                        i.touch.x = e.clientX / window.innerWidth * 2 - 1,
-                        i.touch.y = -(e.clientY / window.innerHeight) * 2 + 1;
-                    var t = new THREE.Vector3
-                        , n = (new THREE.Vector3(i.touch.x, i.touch.y, .5)).unproject(i.Scene.camera)
-                        , r = new THREE.Raycaster(i.Scene.camera.position, n.sub(i.Scene.camera.position).normalize())
-                        , s = r.intersectObjects(i.Scene.objectArray);
-                    r.setFromCamera(i.touch, i.Scene.camera);
-                    if (s.length > 0) {
-                        i.isModeMove = !0,
-                            i.Scene.touchDown = !0,
-                            i.isFar = !1;
-                        if (i.selectObject != s[0].object) {
-                            i.selectObject = s[0].object,
-                                TweenMax.to(".m-info", .2, {
-                                    opacity: 0,
-                                    onComplete: function () {
-                                    }
-                                });
-                            var o = 1;
-                            i.Scene.globalGroup.rotation.x == 0 && i.Scene.globalGroup.rotation.y == 0 && i.Scene.globalGroup.rotation.z == 0 && (o = 0),
-                                TweenMax.to(i.Scene.globalGroup.rotation, o, {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0,
-                                    onComplete: function () {
-                                        t.setFromMatrixPosition(i.selectObject.matrixWorld),
-                                            i.selectObject.modelInfo.isAnimateModel ? (i.Scene.selectAnimateId = i.selectObject.modelInfo.animateId,
-                                                i.selectAnimate = !0,
-                                                i.Scene.animateStart = !0,
-                                                t.z = 400 + t.z) : (i.selectAnimate = !1,
-                                                i.Scene.animateStart = !1,
-                                                i.selectObject.name == "center" ? t.z = 670 + t.z : i.selectObject.name == "mn" ? (t.z = 400 + t.z,
-                                                    t.y = -50 + t.y) : t.z = 165 + t.z),
-                                            TweenMax.to(i.selectObject.rotation, 1, {
-                                                y: 2 * Math.PI + Math.PI / 6,
-                                                delay: .2
-                                            }),
-                                            TweenMax.to(i.Scene.camera.position, 1, {
-                                                x: t.x,
-                                                y: -10 + t.y,
-                                                z: t.z,
-                                                ease: Expo.easeInOut,
-                                                onComplete: function () {
-                                                    i.isPageMove = !0,
-                                                        v(i.selectObject.modelInfo.infoClass),
-                                                        i.btnBox.show(),
-                                                        TweenMax.to(".m-btn", 1, {
-                                                            opacity: 1,
-                                                            onComplete: function () {
-                                                            }
-                                                        })
-                                                }
-                                            })
-                                    }
-                                })
-                        }
-                    } else
-                        console.log("none")
-                }
-
-                function E(e) {
-                    if (e.touches.length > 1)
-                        return !1;
-                    e.preventDefault(),
-                        e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e,
-                    i.isPageMove && i.selectObject && (i.Track.deltaX = e.clientX - i.Track.startPoint.x,
-                        i.Track.deltaY = e.clientY - i.Track.startPoint.y,
-                        i.Track.handleRotation(i.selectObject),
-                        i.Track.startPoint.x = e.clientX,
-                        i.Track.startPoint.y = e.clientY,
-                        i.Track.lastMoveTimestamp = new Date)
-                }
-
-                function S(e) {
-                    if (e.touches.length > 1)
-                        return !1;
-                    e.preventDefault(),
-                        e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e,
-                        i.touchStartX = e.clientX,
-                    i.isPageMove && (i.Track.startPoint = {
+            function documentTouchStart(e) {
+                if (e.touches.length > 1)
+                    return false;
+                e.preventDefault(),
+                    e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e;
+                if (i.isModeMove || !i.isOpeningHide)
+                    return false;
+                i.Scene.globalGroupAnimate = false,
+                    i.PageTrack.startPoint = {
                         x: e.clientX,
                         y: e.clientY
                     },
-                        i.Track.rotateStartPoint = i.Track.rotateEndPoint = i.Track.projectOnTrackball(0, 0))
-                }
+                    i.PageTrack.rotateStartPoint = i.PageTrack.rotateEndPoint = i.PageTrack.projectOnTrackball(0, 0)
+            }
 
-                var e = this
-                    , i = {};
-                i.touch = new THREE.Vector2,
-                    i.selectObject = null ,
-                    i.selectAnimate = !1,
-                    i.pageEl = $(".m-webgl-page"),
-                    i.touchStartX = 0,
-                    i.isFar = !0,
-                    i.isPrev = !0,
-                    i.isNext = !0,
-                    i.isCameraMove = !1,
-                    i.isOpeningHide = !1,
-                    i.isPageMove = !1,
-                    i.isModeMove = !1,
-                    i.isHideDetail = !1,
-                    i.isOpeningAnimate = !1,
-                    i.hasTouch = "ontouchstart" in window,
-                    i.init = function () {
-                        i.loadeEl = $(".m-loading"),
-                            i.processEl = i.loadeEl.find(".loadProcess .inner"),
-                            i.opening = $(".m-opening"),
-                            i.btnBox = $(".m-btn"),
-                            i.boxContent = i.btnBox.find(".btn-box"),
-                            i.prevBtn = i.btnBox.find(".btn-prev"),
-                            i.nextBtn = i.btnBox.find(".btn-next"),
-                            i.close3dBtn = i.btnBox.find(".btn-close-3d"),
-                            i.openBtn = i.btnBox.find(".btn-open"),
-                            i.shareBtn = $(".btn-share"),
-                            i.sharePop = $(".share-pop"),
-                            i.music = $(".music"),
-                            i.info = $(".m-info"),
-                            i.infoTitle = i.info.find(".info-title"),
-                            i.detail = $(".m-detail"),
-                            i.closeDetailBtn = i.detail.find(".btn-close-detail"),
-                            i.detailCut = $(".detail-cut"),
-                            i.detailCutLeft = i.detailCut.find(".top-left"),
-                            i.Scene = i.Scene || new n,
-                            i.Scene.onloading = function (e) {
-                                console.log(e),
-                                    i.processEl.css("width", e + "%")
-                            }
-                            ,
-                            i.Scene.onload = function (e) {
-                                i.loadeEl.hide(),
-                                    i.pageEl.show()
-                            }
-                            ,
-                            $(".btn-link").on("touchstart", function (e) {
-                                e.preventDefault(),
-                                    e.stopPropagation(),
-                                    location.href = "http://v.qq.com/live/p/topic/2227/preview_h5.html"
+            function documentTouchMove(e) {
+                if (e.touches.length > 1)
+                    return false;
+                e.preventDefault(),
+                    e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e;
+                if (i.isModeMove || !i.isOpeningHide)
+                    return false;
+                i.Scene.globalGroupAnimate = false,
+                    i.PageTrack.deltaX = e.clientX - i.PageTrack.startPoint.x,
+                    i.PageTrack.deltaY = e.clientY - i.PageTrack.startPoint.y,
+                    i.PageTrack.handleRotation(i.Scene.globalGroup),
+                    i.PageTrack.startPoint.x = e.clientX,
+                    i.PageTrack.startPoint.y = e.clientY,
+                    i.PageTrack.lastMoveTimestamp = new Date
+            }
+
+            function l(e, t) {
+                if (!e.modelInfo.animateId) {
+                    console.log(n);
+                    var n = e.children[0].children[0].material;
+                    n.wireframe && (t ? TweenMax.to(n, 1, {
+                        opacity: 1,
+                        onComplete: function () {
+                            n.transparent = false
+                        }
+                    }) : TweenMax.to(n, 1, {
+                        opacity: 0,
+                        onComplete: function () {
+                            n.transparent = true
+                        }
+                    }))
+                }
+            }
+
+            function close3dBtnTouch(e) {
+                if (i.isFar)
+                    return false;
+                i.isFar = true,
+                    i.isModeMove = false,
+                    e.preventDefault(),
+                    m(i.selectObject.modelInfo.infoClass),
+                    TweenMax.to(i.selectObject.rotation, 1, {
+                        x: -Math.PI / 12,
+                        y: Math.PI / 6,
+                        z: 0,
+                        onComplete: function () {
+                            i.selectObject = null
+                        }
+                    }),
+                    TweenMax.to(".m-btn", .5, {
+                        opacity: 0,
+                        onComplete: function () {
+                            i.btnBox.hide()
+                        }
+                    }),
+                    TweenMax.to(".btn-open", .5, {
+                        rotation: 0
+                    }),
+                    TweenMax.to(".btn-close-3d", .5, {
+                        rotation: 0
+                    }),
+                    TweenMax.to(".btn-prev .inner", .5, {
+                        x: 0
+                    }),
+                    TweenMax.to(".btn-next .inner", .5, {
+                        x: 0,
+                        onComplete: function () {
+                            i.boxContent.removeClass("animate"),
+                                i.Scene.globalGroupAnimate = true
+                        }
+                    }),
+                    TweenMax.to(i.Scene.camera.position, 1, {
+                        x: 0,
+                        y: 0,
+                        z: 1500,
+                        ease: "Cubic.easeInOut",
+                        onComplete: function () {
+                            i.isPageMove = false,
+                                i.selectAnimate = false,
+                                i.Scene.animateStart = false,
+                                i.Scene.touchDown = false,
+                                i.isCameraMove = false,
+                                i.prevBtn.removeClass("lock"),
+                                i.nextBtn.removeClass("lock")
+                        }
+                    })
+            }
+
+            function prevBtnTouch(e) {
+                if (!i.isPrev || i.isCameraMove)
+                    return false;
+                i.isCameraMove = true,
+                    e.preventDefault();
+                var n, r = new THREE.Vector3, s = i.selectObject.modelInfo.id;
+                TweenMax.to(i.selectObject.rotation, .5, {
+                    x: -Math.PI / 12,
+                    y: Math.PI / 6,
+                    z: 0,
+                    onComplete: function () {
+                    }
+                }),
+                    m(i.selectObject.modelInfo.infoClass),
+                    s == 0 ? (i.selectObject = i.Scene.objectArray[t.modelArray.length - 1],
+                        r.setFromMatrixPosition(i.Scene.objectArray[t.modelArray.length - 1].matrixWorld)) : (i.selectObject = i.Scene.objectArray[s - 1],
+                        r.setFromMatrixPosition(i.Scene.objectArray[s - 1].matrixWorld)),
+                    b(r, i.selectObject)
+            }
+
+            function p(e) {
+                if (!i.isNext || i.isCameraMove)
+                    return false;
+                i.isCameraMove = true,
+                    e.preventDefault();
+                var n = new THREE.Vector3
+                    , r = i.selectObject.modelInfo.id;
+                TweenMax.to(i.selectObject.rotation, .5, {
+                    x: -Math.PI / 12,
+                    y: Math.PI / 6,
+                    z: 0,
+                    onComplete: function () {
+                    }
+                }),
+                    m(i.selectObject.modelInfo.infoClass),
+                    r == t.modelArray.length - 1 ? (i.selectObject = i.Scene.objectArray[0],
+                        n.setFromMatrixPosition(i.Scene.objectArray[0].matrixWorld)) : (i.selectObject = i.Scene.objectArray[r + 1],
+                        n.setFromMatrixPosition(i.Scene.objectArray[r + 1].matrixWorld)),
+                    b(n, i.selectObject)
+            }
+
+            function d() {
+                i.selectObject.modelInfo.id == 0 ? (i.prevBtn.addClass("lock"),
+                    i.isPrev = false) : (i.prevBtn.removeClass("lock"),
+                    i.isPrev = true),
+                    i.selectObject.modelInfo.id == t.modelArray.length - 1 ? (i.nextBtn.addClass("lock"),
+                        i.isNext = false) : (i.nextBtn.removeClass("lock"),
+                        i.isNext = true)
+            }
+
+            function v(e) {
+                i.infoTitle.removeClass().addClass("info-title " + e),
+                    i.info.show(),
+                    TweenMax.to(".btn-open", 1, {
+                        rotation: 360,
+                        onComplete: function () {
+                        }
+                    }),
+                    TweenMax.to(".btn-close-3d", 1, {
+                        rotation: 360,
+                        onComplete: function () {
+                        }
+                    }),
+                    TweenMax.to(".btn-prev .inner", 1, {
+                        x: -34,
+                        onComplete: function () {
+                        }
+                    }),
+                    TweenMax.to(".btn-next .inner", 1, {
+                        x: 32,
+                        onComplete: function () {
+                            i.boxContent.addClass("animate")
+                        }
+                    }),
+                    TweenMax.to(".m-info", 1, {
+                        opacity: 1,
+                        onComplete: function () {
+                            console.log("show-info")
+                        }
+                    })
+            }
+
+            function m(e) {
+                i.infoTitle.removeClass(e),
+                    TweenMax.to(".m-info", .2, {
+                        opacity: 0,
+                        onComplete: function () {
+                            console.log("hide-info"),
+                                i.info.hide()
+                        }
+                    })
+            }
+
+            function openBtnTouch(e) {
+                e.preventDefault(),
+                    i.detailCut.show(),
+                    setTimeout(function () {
+                        i.detailCut.addClass("animate"),
+                            i.selectObject.modelInfo.detailContentEl.show(),
+                            i.detail.show(),
+                            TweenMax.to(".m-detail", 1, {
+                                opacity: 1,
+                                delay: .1,
+                                onComplete: function () {
+                                    console.log("show-detail")
+                                }
                             }),
-                            i.Track = i.Track || new r,
-                            i.PageTrack = i.PageTrack || new r,
-                            i.PageTrack.rotationSpeed = .5,
-                            s(),
-                            $(document.documentElement).on("touchstart", a),
-                            $(document.documentElement).on("touchmove", f),
-                            i.opening.on("touchstart", o),
-                            $(i.Scene.renderer.domElement).on("touchstart", S),
-                            $(i.Scene.renderer.domElement).on("touchmove", E),
-                            $(i.Scene.renderer.domElement).on("touchend", w),
-                            i.close3dBtn.on("touchstart", c),
-                            i.prevBtn.on("touchstart", h),
-                            i.nextBtn.on("touchstart", p),
-                            i.openBtn.on("touchstart", g),
-                            i.closeDetailBtn.on("touchstart", y),
-                            i.shareBtn.on("touchstart", u),
-                            i.detailCutLeft.on("webkitAnimationEnd", function (e) {
-                                i.detailCut.hide(),
-                                    i.detailCut.removeClass("animate")
-                            }),
-                            $(window).on("resize", function () {
-                                i.Scene.handleResize()
+                            TweenMax.to(".btn-close-detail", 1, {
+                                rotation: 360,
+                                delay: .2,
+                                onComplete: function () {
+                                }
+                            })
+                    }, 100)
+            }
+
+            function closeDetailBtnTouch(e) {
+                if (i.isHideDetail)
+                    return false;
+                i.isHideDetail = true,
+                    e.preventDefault(),
+                    e.stopPropagation(),
+                    TweenMax.to(".btn-close-detail", .7, {
+                        rotation: 0,
+                        onComplete: function () {
+                        }
+                    }),
+                    TweenMax.to(".m-detail", .5, {
+                        opacity: 0,
+                        delay: .1,
+                        onComplete: function () {
+                            console.log("hide-detail"),
+                                i.detail.hide(),
+                                i.selectObject.modelInfo.detailContentEl.hide(),
+                                i.isHideDetail = false
+                        }
+                    })
+            }
+
+            function b(e, t) {
+                t.modelInfo.isAnimateModel ? (i.Scene.selectAnimateId = t.modelInfo.animateId,
+                    i.selectAnimate = true,
+                    i.Scene.animateStart = true,
+                    e.z = 400 + e.z) : (i.selectAnimate = false,
+                    i.Scene.animateStart = false,
+                    i.selectObject.name == "center" ? e.z = 670 + e.z : i.selectObject.name == "mn" ? (e.z = 400 + e.z,
+                        e.y = -50 + e.y) : e.z = 165 + e.z),
+                    TweenMax.to(i.Scene.camera.position, 1, {
+                        x: e.x,
+                        y: -10 + e.y,
+                        z: e.z,
+                        ease: Expo.easeInOut,
+                        onComplete: function () {
+                            v(t.modelInfo.infoClass),
+                                i.isCameraMove = false
+                        }
+                    })
+            }
+
+            function sceneTouchEnd(e) {
+                if (e.touches.length > 1)
+                    return false;
+                e.preventDefault(),
+                    e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e;
+                if (Math.abs(e.clientX - i.touchStartX) > 20)
+                    return false;
+                i.Scene.globalGroupAnimate = false,
+                    i.touch.x = e.clientX / window.innerWidth * 2 - 1,
+                    i.touch.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                var t = new THREE.Vector3
+                    , n = (new THREE.Vector3(i.touch.x, i.touch.y, .5)).unproject(i.Scene.camera)
+                    , r = new THREE.Raycaster(i.Scene.camera.position, n.sub(i.Scene.camera.position).normalize())
+                    , s = r.intersectObjects(i.Scene.objectArray);
+                r.setFromCamera(i.touch, i.Scene.camera);
+                if (s.length > 0) {
+                    i.isModeMove = true,
+                        i.Scene.touchDown = true,
+                        i.isFar = false;
+                    if (i.selectObject != s[0].object) {
+                        i.selectObject = s[0].object,
+                            TweenMax.to(".m-info", .2, {
+                                opacity: 0,
+                                onComplete: function () {
+                                }
+                            });
+                        var o = 1;
+                        i.Scene.globalGroup.rotation.x == 0 && i.Scene.globalGroup.rotation.y == 0 && i.Scene.globalGroup.rotation.z == 0 && (o = 0),
+                            TweenMax.to(i.Scene.globalGroup.rotation, o, {
+                                x: 0,
+                                y: 0,
+                                z: 0,
+                                onComplete: function () {
+                                    t.setFromMatrixPosition(i.selectObject.matrixWorld),
+                                        i.selectObject.modelInfo.isAnimateModel ? (i.Scene.selectAnimateId = i.selectObject.modelInfo.animateId,
+                                            i.selectAnimate = true,
+                                            i.Scene.animateStart = true,
+                                            t.z = 400 + t.z) : (i.selectAnimate = false,
+                                            i.Scene.animateStart = false,
+                                            i.selectObject.name == "center" ? t.z = 670 + t.z : i.selectObject.name == "mn" ? (t.z = 400 + t.z,
+                                                t.y = -50 + t.y) : t.z = 165 + t.z),
+                                        TweenMax.to(i.selectObject.rotation, 1, {
+                                            y: 2 * Math.PI + Math.PI / 6,
+                                            delay: .2
+                                        }),
+                                        TweenMax.to(i.Scene.camera.position, 1, {
+                                            x: t.x,
+                                            y: -10 + t.y,
+                                            z: t.z,
+                                            ease: Expo.easeInOut,
+                                            onComplete: function () {
+                                                i.isPageMove = true,
+                                                    v(i.selectObject.modelInfo.infoClass),
+                                                    i.btnBox.show(),
+                                                    TweenMax.to(".m-btn", 1, {
+                                                        opacity: 1,
+                                                        onComplete: function () {
+                                                        }
+                                                    })
+                                            }
+                                        })
+                                }
                             })
                     }
-                    ,
-                    e.show = function () {
-                        $(".m-main").show()
-                    }
-                    ,
-                    i.init()
+                } else
+                    console.log("none")
             }
-            ;
-        return i
-    }),
-    require.config({
-        urlArgs: "bust=" + (new Date).getTime()
+
+            function sceneTouchMove(e) {
+                if (e.touches.length > 1)
+                    return false;
+                e.preventDefault(),
+                    e = i.hasTouch && e.changedTouches[0] ? e.changedTouches[0] : e,
+                i.isPageMove && i.selectObject && (i.Track.deltaX = e.clientX - i.Track.startPoint.x,
+                    i.Track.deltaY = e.clientY - i.Track.startPoint.y,
+                    i.Track.handleRotation(i.selectObject),
+                    i.Track.startPoint.x = e.clientX,
+                    i.Track.startPoint.y = e.clientY,
+                    i.Track.lastMoveTimestamp = new Date)
+            }
+
+            function sceneTouchStart(e) {
+                if (e.touches.length > 1)
+                    return false;
+                e.preventDefault();
+                if(i.hasTouch && e.changedTouches[0]){
+                    e =   e.changedTouches[0]
+                }
+                i.touchStartX = e.clientX;
+                i.isPageMove && (i.Track.startPoint = {
+                    x: e.clientX,
+                    y: e.clientY
+                },
+                i.Track.rotateStartPoint = i.Track.rotateEndPoint = i.Track.projectOnTrackball(0, 0))
+            }
+
+            var indexViewControllerInstance = this;
+            var i = {};
+            i.touch = new THREE.Vector2;
+            i.selectObject = null;
+            i.selectAnimate = false;
+            i.pageEl = $(".m-webgl-page");
+            i.touchStartX = 0;
+            i.isFar = true;
+            i.isPrev = true;
+            i.isNext = true;
+            i.isCameraMove = false;
+            i.isOpeningHide = false;
+            i.isPageMove = false;
+            i.isModeMove = false;
+            i.isHideDetail = false;
+            i.isOpeningAnimate = false;
+            i.hasTouch = "ontouchstart" in window;
+            i.init = function () {
+                i.loadeEl = $(".m-loading");
+                i.processEl = i.loadeEl.find(".loadProcess .inner");
+                i.opening = $(".m-opening");
+                i.btnBox = $(".m-btn");
+                i.boxContent = i.btnBox.find(".btn-box");
+                i.prevBtn = i.btnBox.find(".btn-prev");
+                i.nextBtn = i.btnBox.find(".btn-next");
+                i.close3dBtn = i.btnBox.find(".btn-close-3d");
+                i.openBtn = i.btnBox.find(".btn-open");
+                i.shareBtn = $(".btn-share");
+                i.sharePop = $(".share-pop");
+                i.music = $(".music");
+                i.info = $(".m-info");
+                i.infoTitle = i.info.find(".info-title");
+                i.detail = $(".m-detail");
+                i.closeDetailBtn = i.detail.find(".btn-close-detail");
+                i.detailCut = $(".detail-cut");
+                i.detailCutLeft = i.detailCut.find(".top-left");
+                i.Scene = i.Scene || new Scene;
+                i.Scene.onloading = function (e) {
+                    console.log(e);
+                    i.processEl.css("width", e + "%")
+                };
+                i.Scene.onload = function (e) {
+                    i.loadeEl.hide();
+                    i.pageEl.show();
+                };
+                $(".btn-link").on("touchstart", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    location.href = "http://v.qq.com/live/p/topic/2227/preview_h5.html"
+                });
+                i.Track = i.Track || new track;
+                i.PageTrack = i.PageTrack || new track;
+                i.PageTrack.rotationSpeed = .5;
+                pgMusicController();
+                $(document.documentElement).on("touchstart", documentTouchStart);
+                $(document.documentElement).on("touchmove", documentTouchMove);
+                i.opening.on("touchstart", openingLoading);
+                $(i.Scene.renderer.domElement).on("touchstart", sceneTouchStart);
+                $(i.Scene.renderer.domElement).on("touchmove", sceneTouchMove);
+                $(i.Scene.renderer.domElement).on("touchend", sceneTouchEnd);
+                i.close3dBtn.on("touchstart", close3dBtnTouch);
+                i.prevBtn.on("touchstart", prevBtnTouch);
+                i.nextBtn.on("touchstart", p);
+                i.openBtn.on("touchstart", openBtnTouch);
+                i.closeDetailBtn.on("touchstart", closeDetailBtnTouch);
+                i.shareBtn.on("touchstart", shareBtnTouch);
+                i.detailCutLeft.on("webkitAnimationEnd", function (e) {
+                    i.detailCut.hide();
+                    i.detailCut.removeClass("animate")
+                });
+                $(window).on("resize", function () {
+                    i.Scene.handleResize()
+                })
+            }
+
+            indexViewControllerInstance.show = function () {
+                $(".m-main").show()
+            }
+
+            i.init()
+        };
+        return indexViewControllerConstructor
     });
+require.config({
+    urlArgs: "bust=" + (new Date).getTime()
+});
 try {
     new THREE.WebGLRenderer,
         require(["app/TD", "app/Config", "app/LoadViewController", "app/IndexViewController"], function (e, t, n, r) {

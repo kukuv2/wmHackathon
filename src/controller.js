@@ -5,6 +5,18 @@ export default (function () {
         i.Track = new track
         i.PageTrack = new track
         i.PageTrack.rotationSpeed = 5
+        //
+        i.touchStartX = 0;
+        i.isFar = true;
+        i.isPrev = true;
+        i.isNext = true;
+        i.isCameraMove = false;
+        i.isOpeningHide = false;
+        i.isPageMove = false;
+        i.isModeMove = false;
+        i.isHideDetail = false;
+        i.isOpeningAnimate = false;
+        //
         i.hasTouch = "ontouchstart" in window
         i.isPageMove = true
         i.selectObject = null,

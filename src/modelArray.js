@@ -79,21 +79,6 @@ export default [{
     detailContentEl: $(".sq-content")
 }, {
     id: 5,
-    modelName: "sj",
-    modelDescription: "手机",
-    modelSrc: t.modePath + "shouji.png",
-    color: "",
-    x: "13.31534",
-    y: "-5.26887",
-    z: "4.41674",
-    scaleX: .2,
-    scaleY: .2,
-    scaleZ: .2,
-    modelType: "imgModel",
-    infoClassName: "sj",
-    detailContentEl: $(".sj-content")
-}, {
-    id: 6,
     modelName: "wx",
     modelDescription: "微信",
     modelSrc: t.modePath + "wx.json",
@@ -108,7 +93,7 @@ export default [{
     infoClassName: "wx",
     detailContentEl: $(".wx-content")
 }, {
-    id: 7,
+    id: 6,
     modelName: "mkf",
     modelDescription: "独家专享",
     modelSrc: t.modePath + "mkf.json",
@@ -123,7 +108,7 @@ export default [{
     infoClassName: "mkf",
     detailContentEl: $(".mkf-content")
 }, {
-    id: 8,
+    id: 7,
     modelName: "jcxj",
     modelDescription: "巨星城记",
     modelSrc: t.modePath + "jcxj.json",
@@ -138,7 +123,7 @@ export default [{
     infoClassName: "jcxj",
     detailContentEl: $(".jcxj-content")
 }, {
-    id: 9,
+    id: 8,
     modelName: "xhy",
     modelDescription: "多路信号源",
     modelSrc: t.modePath + "xhy.json",
@@ -153,7 +138,7 @@ export default [{
     infoClassName: "xhy",
     detailContentEl: $(".xhy-content")
 }, {
-    id: 10,
+    id: 9,
     modelName: "dj",
     modelDescription: "神秘道具",
     modelSrc: t.modePath + "dj.json",
@@ -168,7 +153,7 @@ export default [{
     infoClassName: "dj",
     detailContentEl: $(".dj-content")
 }, {
-    id: 11,
+    id: 10,
     modelName: "khd",
     modelDescription: "腾讯体育APP",
     modelSrc: t.modePath + "khd.json",
